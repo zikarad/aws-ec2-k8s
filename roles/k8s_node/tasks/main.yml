@@ -12,6 +12,9 @@
   command: "echo \"SELinux changed\""
   when: selinux.changed
 
+- name: Disable swap
+  command: 'swapoff --all'
+
 - name: Provide K8s repository
   yum_repository:
     name: kubernetes
