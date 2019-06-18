@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+
+touch /var/lock/subsys/local
+echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
+echo "# Host: `hostname -f`" > /etc/motd
+echo -n "# OS: `uname -o` " >> /etc/motd
+echo `cat /etc/redhat-release` >> /etc/motd
+echo -n '# Template: ' >> /etc/motd
+echo -n '# {{template_host}}:' >> /etc/motd
+echo '# {{template_path}}' >> /etc/motd

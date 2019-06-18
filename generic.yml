@@ -11,7 +11,36 @@
         - vim
         - telnet
         - git
-        - wget
         - bind-utils
         - strace
         - psmisc
+
+    - name: Provide motd
+      template:
+        src: templates/rc.local
+        dest: /etc/rc.d/rc.local
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Permanently disable swap
+      lineinfile:
+        path: /etc/fstab
+        backrefs: yes
+        regexp: '^[^#](.+\s+)swap(\s+.+)$'
+        line: '#\1swap\2'
+
+    - name: Disable service(s)
+      service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      loop:
+        - iscsid
+        - multipathd
+        - abrtd
+        - abrt-ccpp
+        - abrt-oops
+        - abrt-vmcore
+        - abrt-xorg
+        - kdump

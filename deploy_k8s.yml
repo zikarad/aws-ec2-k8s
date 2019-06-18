@@ -31,8 +31,8 @@
 
     - name: CNI - get package
       get_url:
-        url: https://github.com/containernetworking/plugins/releases/download/{{CNI_VERSION}}/cni-plugins-amd64-{{CNI_VERSION}}.tgz
-        dest: /tmp/cni-plugins-amd64-{{CNI_VERSION}}.tgz
+        url: "https://github.com/containernetworking/plugins/releases/download/{{CNI_VERSION}}/cni-plugins-linux-amd64-{{CNI_VERSION}}.tgz"
+        dest: /tmp/cni-plugins-linux-amd64-{{CNI_VERSION}}.tgz
 
     - name: CNI - extract
       unarchive:
