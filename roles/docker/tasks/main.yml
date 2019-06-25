@@ -21,6 +21,16 @@
     name: docker-ce-{{DOCKER_VERSION}}
     state: present
 
+- name: Docker dir
+  file:
+    name: /etc/docker
+    state: directory
+
+- name: Docker daemon config
+  template:
+    src: ../templates/docker_daemon.json
+    dest: /etc/docker/daemon.json
+
 - name: Start Docker
   service:
     name: docker
