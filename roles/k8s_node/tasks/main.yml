@@ -1,3 +1,19 @@
+- name: Disable swapiness
+  sysctl:
+    name: vm.swappiness
+    value: "0"
+    state: present
+
+- name: Disable swap
+  command: swapoff --all
+
+- name: Permanently disable swap
+  lineinfile:
+    path: /etc/fstab
+    backrefs: yes
+    regexp: '^[^#](.+\s+)swap(\s+.+)$'
+    line: '#\1swap\2'
+
 - name: Disable SELinux
   selinux:
     policy: targeted
@@ -5,15 +21,14 @@
   register: selinux
 
 - name: Need reboot
-  command: "shutdown -r now"
+  reboot:
+    connect_timeout: 180
   when: selinux.changed
 
 - name: Wake up
-  command: "echo \"SELinux changed\""
+  debug: 
+    msg: "SELinux changed"
   when: selinux.changed
-
-- name: Disable swap
-  command: 'swapoff --all'
 
 - name: Provide K8s repository
   yum_repository:
